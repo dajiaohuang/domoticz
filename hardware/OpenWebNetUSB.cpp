@@ -214,12 +214,12 @@ bool COpenWebNetUSB::WriteToHardware(const char *pdata, const unsigned char leng
 
 	std::vector<bt_openwebnet> responses;
 	bt_openwebnet request(whoStr.str(), whatStr.str(), whereStr.str(), "");
-	if (sendCommand(request, responses))
+	if (!sendCommand(request, responses))
+		return false;
+
+	if (!responses.empty())
 	{
-		if (!responses.empty())
-		{
-			return responses.at(0).IsOKFrame();
-		}
+		return responses.at(0).IsOKFrame();
 	}
 
 	return true;
